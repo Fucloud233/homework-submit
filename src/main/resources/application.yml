@@ -1,0 +1,14 @@
+# Spring 配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost/library_management?useUnicode=true&characterEncoding=utf8"
+    username: "root"
+    password: "123456"
+# 服务端连接设置
+server:
+  port: 8081
+# MyBatis配置
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
