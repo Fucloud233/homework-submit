@@ -2,9 +2,11 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://localhost/library_management?useUnicode=true&characterEncoding=utf8"
+    url: "jdbc:mysql://localhost/homework_submit?useUnicode=true&characterEncoding=utf8"
     username: "root"
     password: "123456"
+  jackson:
+    default-property-inclusion: non_null
 # 服务端连接设置
 server:
   port: 8081
