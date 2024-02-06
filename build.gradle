@@ -22,6 +22,9 @@ repositories {
 }
 
 dependencies {
+	// 用于将汉字转换为拼音
+	implementation group: 'com.belerweb', name: 'pinyin4j', version: '2.5.1'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	compileOnly 'org.projectlombok:lombok'
