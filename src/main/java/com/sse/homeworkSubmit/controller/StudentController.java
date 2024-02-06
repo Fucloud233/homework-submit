@@ -19,8 +19,6 @@ public class StudentController {
         Integer pageNum, Integer pageSize) {
         Student stu = new Student(id, name, grade, gender);
 
-        System.out.println(stu);
-
         Object result = studentService.query(stu, pageNum, pageSize);
 
         return Result.createOk(result);

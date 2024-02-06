@@ -17,10 +17,10 @@
 
     <sql id="commonWhere">
         <where>
-            <if test="student.id != null">SId like CONCAT('%', ${student.id}, '%') and</if>
-            <if test="student.name.length() != 0">SName like CONCAT('%', ${student.name}, '%') and</if>
-            <if test="student.gender != null"> gender = ${student.gender} and</if>
-            <if test="student.grade != null"> grade = ${grade} and</if>
+            <if test="student.id != null">and SId = #{student.id}</if>
+            <if test="student.name != null &amp;&amp; student.name.length() != 0"> and SName like CONCAT('%', #{student.name}, '%') </if>
+            <if test="student.gender != null">and gender = #{student.gender}</if>
+            <if test="student.grade != null">and grade = #{student.grade}</if>
         </where>
     </sql>
 
@@ -40,6 +40,6 @@
     </select>
 
     <select id="getById" resultType="com.sse.homeworkSubmit.pojo.Student">
-        <include refid="commonSelect"></include> where SId = ${id}
+        <include refid="commonSelect"></include> where SId = #{id}
     </select>
 </mapper>
