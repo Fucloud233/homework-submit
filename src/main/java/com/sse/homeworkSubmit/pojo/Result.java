@@ -1,6 +1,7 @@
 package com.sse.homeworkSubmit.pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.sse.homeworkSubmit.utils.error.SystemErrorKind;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -18,5 +19,13 @@ public class Result {
 
     public static Result createOk() {
         return Result.createOk(null);
+    }
+
+    public static Result createErr(String msg) {
+        return new Result(null, 1, msg);
+    }
+
+    public static Result createErr(SystemErrorKind kind) {
+        return new Result(null, kind.getCode(), kind.getMessage());
     }
 }
