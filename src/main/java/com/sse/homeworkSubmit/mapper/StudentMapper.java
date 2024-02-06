@@ -8,7 +8,9 @@ import java.util.List;
 
 @Mapper
 public interface StudentMapper {
-    void insert(List<Student> students);
+    void insert(Student student);
+    void insertInBatch(List<Student> students);
+
     void update(Student student);
 
 

@@ -4,10 +4,15 @@ import com.sse.homeworkSubmit.mapper.StudentMapper;
 import com.sse.homeworkSubmit.pojo.Student;
 import com.sse.homeworkSubmit.service.student.StudentService;
 import com.sse.homeworkSubmit.utils.Pair;
+import com.sse.homeworkSubmit.utils.PinyinConverter;
+import com.sse.homeworkSubmit.utils.error.SystemError;
+import com.sse.homeworkSubmit.utils.error.SystemErrorKind;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +35,6 @@ public class StudentServiceA implements StudentService {
         List<Student> students =  studentMapper.query(student, pageNum, pageSize);
         Integer count = studentMapper.count(student);
 
-        System.out.println("stu: " + students.getFirst());
-
         Map<String, Object> data = new HashMap<>();
         data.put("info", students);
         data.put("length", count);
@@ -40,7 +43,26 @@ public class StudentServiceA implements StudentService {
     }
 
     @Override
-    public void add(Student student) {
+    public void add(Student student) throws SystemError {
+        if(studentMapper.getById(student.getId()) != null) {
+            throw SystemErrorKind.StudentExist.toError();
+        }
+
+        // 如果传入的密码为空，则会自动生成
+        String password = student.getPassword();
+        if(password == null || password.isEmpty()) {
+            try {
+                student.setPassword(StudentServiceA.generatePassword(student));
+            } catch (Exception e) {
+                throw SystemErrorKind.InternalError.toError();
+            }
+        }
+
+        studentMapper.insert(student);
+    }
+
+    @Override
+    public void addInBatch(List<Student> student) throws Exception {
 
     }
 
@@ -57,5 +79,22 @@ public class StudentServiceA implements StudentService {
         return new Pair<> (pageNum, pageSize);
     }
 
+
+    /** 根据学生信息自动生成密码
+     * 生成规则：姓名拼音首字母 + 学号
+     * @param student
+     * @return
+     * @throws InvalidPropertiesFormatException
+     */
+    private static String generatePassword(Student student) throws InvalidPropertiesFormatException {
+        System.out.println(student);
+
+        if(student.getName() == null || student.getName().isEmpty()
+            || student.getId() == null ) {
+            throw new InvalidPropertiesFormatException("The name of id of student is null.");
+        }
+
+        return PinyinConverter.getInitialLetter(student.getName()) + student.getId();
+    }
 
 }

@@ -6,7 +6,12 @@
 
 <mapper namespace="com.sse.homeworkSubmit.mapper.StudentMapper">
 
-    <insert id="insert"></insert>
+    <insert id="insert">
+        insert into student (SId, SName, Password, Grade, Gender)
+            values (#{id}, #{name}, #{password}, #{grade}, #{gender})
+    </insert>
+
+    <insert id="insertInBatch"></insert>
 
     <update id="update"></update>
 
